@@ -38,15 +38,13 @@ namespace test_tls
 
                 var request = (HttpWebRequest)WebRequest.Create(server);
 
-                using (var response = (HttpWebResponse)await request.GetResponseAsync())
-                {
-                    await Console.Out.WriteLineAsync($"StatusCode: {response.StatusCode} {(int)response.StatusCode}");
+                using var response = (HttpWebResponse)await request.GetResponseAsync();
 
-                    using (var sr = new StreamReader(response.GetResponseStream()))
-                    {
-                        await sr.ReadToEndAsync();
-                    }
-                }
+                await Console.Out.WriteLineAsync($"StatusCode: {response.StatusCode} {(int)response.StatusCode}");
+
+                using var sr = new StreamReader(response.GetResponseStream());
+
+                await sr.ReadToEndAsync();
             }
             catch (Exception ex)
             {
